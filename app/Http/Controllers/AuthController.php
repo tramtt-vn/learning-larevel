@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use App\Notifications\CustomVerifyEmail;
 use Illuminate\Auth\Events\Registered;
-// use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -45,10 +45,11 @@ class AuthController extends Controller
     public function register(RegisterRequest $request){
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
+        $data['verification_token'] = Str::random(64);
         $user = User::create($data);
         event(new Registered($user));
         Auth::login($user);
-        $user->notify(new CustomVerifyEmail());
+        // $user->notify(new CustomVerifyEmail());
         return redirect()->route('dashboard')->with('success', "Đăng ký thành công");
     }
 }

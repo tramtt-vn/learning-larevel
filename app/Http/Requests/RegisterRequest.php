@@ -20,8 +20,15 @@ class RegisterRequest extends FormRequest {
     public function  messages()
     {
         return [
+            'name.required' => 'Vui lòng nhập họ tên',
+            'name.max' => 'Họ tên không được vượt quá 255 ký tự',
+            'email.required' => 'Vui lòng nhập email',
+            'email.email' => 'Email không đúng định dạng',
             'email.unique' => 'Email đã được sử dụng',
-            'password.confirmed' => 'Mật khẩu xác nhận không khớp',
+            'password.required' => 'Vui lòng nhập mật khẩu',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp',
+            'email.max' => 'Email không được vượt quá 255 ký tự',
         ];
     }
     protected $casts = [

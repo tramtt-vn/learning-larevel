@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'age',
         'address',
         'password',
+        'verification_token',
     ];
 
     /**
@@ -37,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'verification_token',
     ];
 
     /**
@@ -51,6 +53,21 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'age' => 'integer',
         ];
+    }
+    public function hasVerifiedEmail(): bool
+    {
+        return !is_null($this->email_verified_at);
+    }
+
+    /**
+     * Đánh dấu email đã xác thực
+     */
+    public function markEmailAsVerified(): bool
+    {
+        return $this->forceFill([
+            'email_verified_at' => $this->freshTimestamp(),
+            'verification_token' => null,
+        ])->save();
     }
     public function getEmailForVerification()
     {

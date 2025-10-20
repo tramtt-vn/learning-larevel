@@ -13,7 +13,8 @@ class VerificationController extends Controller {
         if($request->user()->hasVerifiedEmail()){
             return redirect()->route('dashboard')->with('info', 'Email đã được xác minh trước đó');
         }
-        if($request->user()->maskEmailAsVerify()){
+        if($request->user()->markEmailAsVerified()){
+            $request->user()->update(['verification_token' => null]);
             event(new Verified($request->user()));
         }
         return redirect()->route('dashboard')->with('success', "Email xác thực thành công");
