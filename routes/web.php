@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\VerificationController;
 // use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
+
 
 
 Route::get('/dashboard', function () {
@@ -22,15 +25,13 @@ Route::middleware('guest')->group(function () {
 // Authenticated routes
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
     // Email verification routes
-    Route::get('/email/verify', [VerificationController::class, 'notice'])->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
-    Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 });
-
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
-
+Route::get('/auth/verify-email', [VerificationController::class, 'show'])->name('auth.verify-email');
+Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+Route::get('/products',[ProductController::class, 'index'])->name('product');
+Route::resource('posts', PostController::class);
 
 ?>

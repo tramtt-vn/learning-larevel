@@ -64,7 +64,7 @@
     </form>
 
     <div class="text-center mt-3">
-        <a href="">Chưa có tài khoản? Đăng ký</a>
+        <a href="{{ route('register') }}">Chưa có tài khoản? Đăng ký</a>
     </div>
 </div>
 

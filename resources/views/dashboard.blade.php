@@ -3,7 +3,13 @@
 @section('content')
 <div class="container">
   <h2>Welcome, {{ auth()->user()->fullname ?? auth()->user()->email }}</h2>
-  <p>Đây là dashboard (chỉ truy cập khi đã auth).</p>
+  <p>Đây là dashboard</p>
+  @if(session('success'))
+     {{ session('success') }}
+  @endif
+  @if(session('error'))
+     {{ session('error') }}
+  @endif
 </div>
 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
     @csrf

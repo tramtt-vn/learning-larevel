@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Danh sách người dùng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light p-4">
+@extends('layouts.app')
+
+@section('title', 'List Users')
+@section('content')
+
 
 <div class="container">
-    <h2 class="mb-4 text-center">Danh sách người dùng</h2>
-
+    <div class="dflex-head">
+        <h2 class="mb-4 text-center">Danh sách người dùng</h2>
+        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            Đăng xuất
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </div>
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
             <tr>
@@ -41,6 +45,4 @@
         </tbody>
     </table>
 </div>
-
-</body>
-</html>
+@endsection

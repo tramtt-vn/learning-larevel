@@ -25,6 +25,13 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
+        $user = User::where('email', $credentials['email'])->first();
+        if(!$user) {
+            return back()->withErrors(['email' => 'Email hoặc mật khẩu không đúng',])->withInput();
+        }
+        if(!$user->hasVerifiedEmail()) {
+            return back()->withErrors(['email' => 'Email chưa được xác thực, vui lòng xác thực trước khi đăng nhập',])->withInput();
+        }
         if(Auth::attempt($credentials, $request->filled('remember'))){
             $request->session()->regenerate();
             return redirect()->intended('/dashboard')->with('success', 'Đăng nhập thành công');
@@ -48,8 +55,7 @@ class AuthController extends Controller
         $data['verification_token'] = Str::random(64);
         $user = User::create($data);
         event(new Registered($user));
-        Auth::login($user);
-        // $user->notify(new CustomVerifyEmail());
-        return redirect()->route('dashboard')->with('success', "Đăng ký thành công");
+        return redirect()->route('auth.verify-email', compact('user'))
+        ->with('success', 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực.')->with(['email'=>  $user->email, 'id' => $user->id,'resend' => "resend"]);
     }
 }

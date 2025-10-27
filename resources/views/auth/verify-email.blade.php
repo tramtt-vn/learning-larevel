@@ -12,14 +12,16 @@
     @endif
 
     <p>
-      Một email xác minh đã được gửi tới <strong>{{ auth()->user()->email }}</strong>.
+      Một email xác minh đã được gửi tới <strong>{{ session('email') }}</strong>.
       Vui lòng kiểm tra hộp thư (và cả spam).
     </p>
-
+    @if(session('resend'))
     <form method="POST" action="{{ route('verification.resend') }}">
+    <input type="hidden" name="id" value="{{ session('id') }}">
       @csrf
       <button type="submit" class="btn btn-primary">Gửi lại link xác minh</button>
     </form>
+    @endif
   </div>
 </div>
 @endsection
