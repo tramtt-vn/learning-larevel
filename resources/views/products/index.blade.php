@@ -23,9 +23,11 @@
     <ul class="list-product">
         @foreach ($products as $product)
             <li>
-                <img src="{{ asset("storage/".$product->image) }}">
-                <span>{{ $product->name }}</span>
-                <label>{{ $product->price }}</label>
+                <a href="{{ route('products.detail', $product->id) }}">
+                    <img src="{{ asset("images/".$product->image) }}">
+                    <span style="font-size: 14px;font-weight: 500;">{{ $product->name }}</span>
+                    <label style="color: red;font-size: 20px">{{ number_format($product->price) }}</label>
+                </a>
             </li>
         @endforeach
     </ul>
