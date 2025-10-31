@@ -2,7 +2,7 @@
 
 @section('title', 'Register')
 @section('content')
-<div class="card p-4 shadow-sm" style="width: 400px;">
+<div class="card p-4 shadow-sm register-block">
     <h3 class="text-center mb-4">Register</h3>
 
     @if ($errors->any())
@@ -53,10 +53,11 @@
             <label>Address</label>
             <input type="text" name="address" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Register</button>
-
+        <div class="flex-d">
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </div>
         <p class="text-center mt-3 mb-0">
-            Already have an account? <a href="{{ route('login') }}">Login</a>
+            Already have an account? <a href="{{ route('customer.login') }}">Login</a>
         </p>
     </form>
 </div>

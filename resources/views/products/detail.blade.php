@@ -25,16 +25,26 @@
     font-size: 8rem;
     overflow: hidden;
 }
-
+.price-large {
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
 .product-image-large img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
 .product-details-content {
     display: flex;
     flex-direction: column;
+}
+.product-title {
+    font-size: 30px;
+}
+.product-description h3 {
+    font-size: 18px;
+    margin-top: 20px;
 }
 </style>
 @section('content')

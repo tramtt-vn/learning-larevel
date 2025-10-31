@@ -9,7 +9,7 @@ class Customer extends Authenticatable
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'phone', 'address', 'password'];
+    protected $fillable = ['name', 'email', 'phone', 'address', 'password','shipping_address','shipping_phone','notes'];
     protected $hidden = ['password'];
     protected $casts = [
         'password' => 'hashed',
@@ -25,5 +25,13 @@ class Customer extends Authenticatable
             return $this->cart()->create();
         }
         return $this->cart();
+    }
+    public function getShippingAddressAttribute($value)
+    {
+        return $value ?? $this->address;
+    }
+    public function getShippingPhoneAttribute($value)
+    {
+        return $value ?? $this->phone;
     }
 }

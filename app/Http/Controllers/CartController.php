@@ -75,4 +75,47 @@ class CartController extends Controller
 
         return $total;
     }
+    public function remove($id) {
+        $customer = Auth::guard('customer')->user();
+        $cart = $customer->cart;
+        if(!$cart) {
+            return redirect('cart.index')->back()->with('error', 'Giỏ hàng không tồn tại');
+        }
+        CartItem::where('cart_id', $cart->id)->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Xóa sản phầm trong giỏ hàng');
+    }
+    public function update(Request $request,$id) {
+
+        $customer = Auth::guard('customer')->user();
+        $cart = $customer->cart;
+
+        if(!$cart) {
+            return redirect()->route('cart.index')->with('error', 'Giỏ hàng không tồn tại!');
+        }
+        $cartItem = CartItem::where('cart_id', $cart->id)->where('id', $id)->firstOrFail();
+
+        if($cartItem->product->stock < $request->quantity) {
+            return redirect()->route('cart.index')->with('error', 'Sản phẩm trong kho không đủ');
+        }
+        //dd($request->quantity);
+        $cartItem->update(['quantity' => $request->quantity]);
+        return redirect()->back()->with('success', 'Đã cập nhật sản phầm trong giỏ hàng thành công');
+    }
+    public function clear() {
+
+        $customer = Auth::guard('customer')->user();
+        $cart = $customer->cart;
+
+        if(!$cart) {
+            return redirect()->route('cart.index')->with('error', 'Giỏ hàng không tồn tại!');
+        }
+        if ($cart->itemCart()->count() === 0) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Giỏ hàng đã trống!');
+        }
+        $cart->itemCart()->delete();
+        //dd($request->quantity);
+        //$cart->cleanItem();
+        return redirect()->back()->with('success', 'Đã xóa tất cả sản phầm trong giỏ hàng');
+    }
 }

@@ -6,13 +6,13 @@ use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\VerificationController;
 // use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 
 
+Route::get('/', [ProductController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -37,8 +37,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 });
 
-
-Route::resource('posts', PostController::class);
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products/{id}', 'show')->name('products.detail');
     Route::get('/products','index')->name('products.index');
@@ -51,7 +49,7 @@ Route::middleware('guest:customer')->group(function () {
 });
 Route::middleware('auth:customer')->group(function () {
     // Logout
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/customer/logout', [CustomerController::class, 'logout'])->name('customer.logout');
 
     // User management
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
