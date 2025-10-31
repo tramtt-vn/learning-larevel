@@ -61,7 +61,7 @@
     <!-- Product Info -->
     <div class="product-details-content">
         <div class="breadcrumb">
-            <a href="{{ route('products.index') }}">Sản phẩm</a> / {{ $product->name }}
+            <a href="{{ route('products.index') }}">Sản phẩm</a> / {{ $product->code }}
         </div>
 
         <h1 class="product-title">{{ $product->name }}</h1>
