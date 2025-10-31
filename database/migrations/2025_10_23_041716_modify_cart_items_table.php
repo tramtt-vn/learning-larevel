@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('cart_items', function(Blueprint $table){
             $table->integer('quantity')->default(1)->change();
-            $table->timestamps();
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('cart_items', function (Blueprint $table) {
+            $table->integer('quantity')->default(null)->change();
+        });
     }
 };
