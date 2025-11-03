@@ -19,10 +19,10 @@ Route::get('/dashboard', function () {
 })->middleware('auth')->name('dashboard');
 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+    Route::get('/admin', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/admin', [AuthController::class, 'login'])->name('login.submit');
+    Route::get('/admin/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/admin/register', [AuthController::class, 'register'])->name('register.submit');
 });
 
 // Authenticated routes
@@ -52,7 +52,7 @@ Route::middleware('auth:customer')->group(function () {
     Route::post('/customer/logout', [CustomerController::class, 'logout'])->name('customer.logout');
 
     // User management
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    // Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
     // Email verification
     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])

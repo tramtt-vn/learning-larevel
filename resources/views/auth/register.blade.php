@@ -19,39 +19,39 @@
         @csrf
         <div class="mb-3">
             <label>Name</label>
-            <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
+            <input type="text" name="name" value="{{ old('name') }}" class="form-control">
         </div>
 
         <div class="mb-3">
             <label>Email</label>
-            <input type="email" name="email" value="{{ old('email') }}" class="form-control" required>
+            <input type="email" name="email" value="{{ old('email') }}" class="form-control">
         </div>
         <div class="mb-3">
             <label>Full Name</label>
-            <input type="text" name="fullname" value="{{ old('fullname') }}" class="form-control" required>
+            <input type="text" name="fullname" value="{{ old('fullname') }}" class="form-control">
         </div>
         <div class="mb-3">
             <label>Age</label>
-            <input type="text" name="age" value="{{ old('age') }}" class="form-control" required>
+            <input type="text" name="age" value="{{ old('age') }}" class="form-control">
         </div>
         <div class="mb-3">
             <label>Password</label>
-            <input type="password" name="password" class="form-control" required>
+            <input type="password" name="password" class="form-control">
         </div>
 
         <div class="mb-3">
             <label>Confirm Password</label>
-            <input type="password" name="password_confirmation" class="form-control" required>
+            <input type="password" name="password_confirmation" class="form-control">
         </div>
 
         <div class="mb-3">
             <label>Phone Number</label>
-            <input type="text" name="phone" class="form-control" required>
+            <input type="text" name="phone" class="form-control">
         </div>
 
         <div class="mb-3">
             <label>Address</label>
-            <input type="text" name="address" class="form-control" required>
+            <input type="text" name="address" class="form-control">
         </div>
         <div class="flex-d">
             <button type="submit" class="btn btn-primary w-100">Register</button>

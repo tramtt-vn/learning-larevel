@@ -68,7 +68,7 @@
 
         <!-- Price -->
         <div class="product-price-section">
-            <span class="price-large">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+            <span class="price-large">{{ number_format($product->price, 0, ',', '.') }}đ {{ number_format($product->vat, 0, ',', '.') }}%</span>
         </div>
 
         <!-- Description -->
