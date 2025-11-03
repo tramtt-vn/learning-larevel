@@ -61,14 +61,14 @@
     <!-- Product Info -->
     <div class="product-details-content">
         <div class="breadcrumb">
-            <a href="{{ route('products.index') }}">Sản phẩm</a> / {{ $product->name }}
+            <a href="{{ route('products.index') }}">Sản phẩm</a> / {{ $product->code }}
         </div>
 
         <h1 class="product-title">{{ $product->name }}</h1>
 
         <!-- Price -->
         <div class="product-price-section">
-            <span class="price-large">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+            <span class="price-large">{{ number_format($product->price, 0, ',', '.') }}đ {{ number_format($product->vat, 0, ',', '.') }}%</span>
         </div>
 
         <!-- Description -->

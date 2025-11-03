@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('cart_items', function(Blueprint $table){
-            $table->integer('quantity')->default(1)->change();
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('vat', length: 10)->nullable()->after('price');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('cart_items', function (Blueprint $table) {
-            $table->integer('quantity')->default(null)->change();
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('vat');
         });
     }
 };
