@@ -5,7 +5,14 @@
 
 
 <div class="container">
-    <h2 class="mb-4 text-center">Danh sách người dùng</h2>
+    <div class="flex-between ">
+        <h2 class="mb-4 text-center">Danh sách người dùng</h2>
+        <form action="{{ route('cart.clear') }}" method="post">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger w-100">xóa tất cả giỏ hàng</button>
+        </form>
+    </div>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -40,7 +47,7 @@
                         <form action="{{ route('cart.remove', $item->id) }}" method="post">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-primary w-100">xóa</button>
+                            <button type="submit" class="btn btn-danger w-100">xóa</button>
                         </form>
                     </td>
                 </tr>
@@ -55,10 +62,9 @@
     <div class="flex-d">
         <a href="{{ route('cart.index') }}">Quay về</a>
          @if($cartItems->count() > 0)
-            <form action="{{ route('cart.clear') }}" method="post">
-                @method('DELETE')
+            <form action="{{ route('orders.checkout') }}" method="get">
                 @csrf
-                <button type="submit" class="btn btn-primary w-100">xóa tất cả</button>
+                <button type="submit" class="btn btn-primary w-100">Mua hàng</button>
             </form>
         @endif
     </div>

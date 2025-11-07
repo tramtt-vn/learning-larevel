@@ -20,14 +20,45 @@
         @foreach ($products as $product)
             <li>
                 <a href="{{ route('products.detail', $product->id) }}">
-                    <img src="{{ asset("images/".$product->image) }}">
+                    <img src="{{ ($product->image) ? asset("storage/".$product->image) : 'https://via.placeholder.com/80x80' }}">
                     <span class="name">{{ $product->name }}</span>
                     <span class="description">{{ $product->description }}</span>
                     <span class="code">Product code: {{ $product->code }}</span>
                     <label>{{ number_format($product->price) }} <span>VNĐ</span></label>
                 </a>
+                <div class="product-stock-info {{ $product->isInStock() ? '' : 'out-of-stock' }}">
+                    @if($product->isInStock())
+                        ✓ Còn {{ $product->stock }} sản phẩm
+                    @else
+                        ✗ Sản phẩm tạm hết hàng
+                    @endif
+                </div>
+                @auth('customer')
+                    <!-- Add to Cart Form -->
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                        @csrf
+                        <div class="add-to-cart-section">
+                            <div class="quantity-input">
+                                <button type="button" onclick="decreaseQuantity()" {{ !$product->isInStock() ? 'disabled' : '' }}>-</button>
+                                <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $product->stock }}" readonly {{ !$product->isInStock() ? 'disabled' : '' }}>
+                                <button type="button" onclick="increaseQuantity()" {{ !$product->isInStock() ? 'disabled' : '' }}>+</button>
+                            </div>
+
+                            <button type="submit" class="btn-add-to-cart" {{ !$product->isInStock() ? 'disabled' : '' }}>
+                                {{ $product->isInStock() ? '🛒' : 'Hết hàng' }}
+                            </button>
+
+                        </div>
+                    </form>
+                @endauth
             </li>
         @endforeach
     </ul>
+    <!-- Pagination -->
+    <div class="row mt-3">
+        <div class="pagination">
+            {{ $products->links() }}
+        </div>
+    </div>
 </div>
 @endsection

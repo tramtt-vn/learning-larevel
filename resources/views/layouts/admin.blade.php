@@ -10,21 +10,21 @@
     <header class="header site-header">
         <div class="header-content">
         <nav>
-            <a href="{{ url('/') }}">Home</a>
-            <a href="{{ route('products.index') }}">Products</a>
+            <a href="{{ route('users.index') }}">List Users</a>
+            <a href="{{ route('admin.products.index') }}">List Products</a>
         </nav>
         <nav>
-            @auth('customer')
+            @auth
+                <a href="{{ route('users.profile') }}">Profile</a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     Logout
                 </a>
-                <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" style="display: none;">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
-                <a href="{{ route('customer.profile') }}">Profile</a>
             @else
-                <a href="{{ route('customer.login') }}">Login</a>
-                <a href="{{ route('customer.register') }}">Register</a>
+                <a href="{{ route('login') }}">Login</a>
+                <a href="{{ route('register') }}">Register</a>
             @endauth
 
             {{-- hiển thị cart count nếu cần --}}
@@ -59,6 +59,8 @@
     </div> --}}
     <div class="main">
         @yield('content')
+        @yield('scripts')
+        @stack('scripts')
     </div>
     <footer class="site-footer">
         <div class="container">

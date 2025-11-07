@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('content')
 
 <div class="login-box">
@@ -15,7 +15,7 @@
     <form method="POST" action="{{ route('login.submit') }}">
         @csrf
         <div class="mb-3">
-            <label for="email" class="form-label">Email:</label>
+            <label for="email" class="form-label">Email <span class="required">*</span></label>
             <input type="email" name="email" id="email" class="form-control"
                    placeholder="Nhập email" required value="{{ old('email') }}">
             @error('email')
@@ -24,7 +24,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="password" class="form-label">Mật khẩu:</label>
+            <label for="password" class="form-label">Mật khẩu <span class="required">*</span></label>
             <input type="password" name="password" id="password" class="form-control"
                    placeholder="Nhập mật khẩu" required>
             @error('password')
@@ -37,7 +37,7 @@
             <label for="remember" class="form-check-label">Ghi nhớ đăng nhập</label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+        <button type="submit" class="btn btn-primary mw-400">Đăng nhập</button>
     </form>
 
     <div class="text-center mt-3">

@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
                     'order_date' => now()->subDays(rand(0, 30)),
                     'total_amount' => 0, // Tính sau
                     'status' => fake()->randomElement(['pending', 'paid', 'shipped', 'completed', 'cancelled']),
-                    'payment_method' => fake()->randomElement(['cash', 'transfer']),
+                    'payment_method' => fake()->randomElement(['cod','bank_transfer', 'momo', 'vnpay']),
                 ]);
 
                 // Tạo order items

@@ -37,7 +37,7 @@
             <label for="remember" class="form-check-label">Ghi nhớ đăng nhập</label>
         </div>
 
-        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+        <button type="submit" class="btn btn-primary mw-400">Đăng nhập</button>
     </form>
 
     <div class="text-center mt-3">

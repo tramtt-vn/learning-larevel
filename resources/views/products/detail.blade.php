@@ -51,8 +51,8 @@
 <div class="product-detail">
     <!-- Product Image -->
     <div class="product-image-large">
-        @if($product->image && file_exists(public_path('images/' . $product->image)))
-            <img src="{{ asset("images/".$product->image) }}" alt="{{ $product->name }}">
+        @if($product->image)
+            <img src="{{ ($product->image) ? asset("storage/".$product->image) : 'https://via.placeholder.com/80x80' }}" alt="{{ $product->name }}">
         @else
             📦
         @endif

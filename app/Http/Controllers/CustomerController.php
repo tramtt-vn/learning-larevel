@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerEditRequest;
+use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
@@ -28,6 +31,11 @@ class CustomerController extends Controller
         ]);
         $credentials = $request->only('email','password');
         $remember = $request->filled('remember');
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
         if(Auth::guard('customer')->attempt($credentials, $remember)) {
             $request->session()->regenerate();
             return redirect()->intended('/products')->with(['success', 'Đăng nhập thành công']);
@@ -45,44 +53,10 @@ class CustomerController extends Controller
         $request->session()->regenerateToken();
         return redirect('/customer/login')->with('status', 'Đăng xuất thành công');
     }
-    public function register(Request $request)
+    public function register(CustomerRequest $request)
     {
         // Validate input
-        $validated = $request->validate([
-            // Thông tin bắt buộc
-            'name' => 'required|string|max:255|min:2',
-            'email' => 'required|string|email|max:255|unique:customers',
-            'password' => [
-                'required',
-                'confirmed',
-                Password::min(6)
-                    ->mixedCase()  // Chữ hoa và chữ thường
-                    ->numbers()    // Có số
-            ],
-
-            // Thông tin liên hệ
-            'phone' => 'nullable|string|max:15|regex:/^[0-9]{10,11}$/',
-            'address' => 'nullable|string|max:500',
-
-            // Thông tin giao hàng (không bắt buộc)
-            'shipping_address' => 'nullable|string|max:500',
-            'shipping_phone' => 'nullable|string|max:15|regex:/^[0-9]{10,11}$/',
-
-            // Ghi chú
-            'notes' => 'nullable|string|max:1000',
-        ], [
-            // Thông báo lỗi tiếng Việt
-            'name.required' => 'Vui lòng nhập họ tên',
-            'name.min' => 'Họ tên phải có ít nhất 2 ký tự',
-            'email.required' => 'Vui lòng nhập email',
-            'email.email' => 'Email không hợp lệ',
-            'email.unique' => 'Email đã được sử dụng',
-            'password.required' => 'Vui lòng nhập mật khẩu',
-            'password.confirmed' => 'Xác nhận mật khẩu không khớp',
-            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
-            'phone.regex' => 'Số điện thoại không hợp lệ (10-11 số)',
-            'shipping_phone.regex' => 'Số điện thoại giao hàng không hợp lệ',
-        ]);
+        $validated = $request->validate();
 
         // Tạo customer mới
         $customer = Customer::create([
@@ -103,4 +77,56 @@ class CustomerController extends Controller
         return redirect()->route('products.index')
             ->with('success', '✅ Đăng ký thành công! Chào mừng ' . $customer->name);
     }
+    public function index()
+    {
+        $customers = Customer::paginate(20);
+        return view('admin.customers.index', compact('customers'));
+    }
+
+    // Xóa customer
+    public function destroy(Customer $customer)
+    {
+        $customer->delete();
+        return redirect()->route('admin.customers.index')
+            ->with('success', 'Đã xóa customer thành công');
+    }
+    public function profile(){
+        $profiles = Auth::guard('customer')->user();
+        return view("customer.profile", compact('profiles'));
+    }
+    public function edit(){
+        $profiles = Auth::guard('customer')->user();
+        return view("customer.edit", compact('profiles'));
+    }
+    public function update(CustomerEditRequest $request) {
+        // Bước 1: Lấy dữ liệu đã được validate
+        // CustomerEditRequest đã kiểm tra:
+        $validated = $request->validated();
+        // Đảm bảo user chỉ update chính profile của mình
+        $customers = Auth::guard('customer')->user();
+        DB::table('customers')
+            ->where('id', $customers->id)
+            ->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'address' => $validated['address'],
+                'shipping_phone' => $validated['shipping_phone'] ?? null,
+                'shipping_address' => $validated['shipping_address'] ?? null,
+            ]);
+        // $customers->name = $validated['name'];
+        // $customers->email = $validated['email'];
+        // $customers->phone = $validated['phone'] ?? $customers->phone;
+        // $customers->address = $validated['address'] ?? $customers->address;
+        // $customers->shipping_phone = $validated['shipping_phone'] ?? null;
+        // $customers->shipping_address = $validated['shipping_address'] ?? null;
+        if($request->filled('password')) {
+            //Tự động thêm salt ngẫu nhiên mã hóa
+            $customers->password = Hash::make($validated['password']);
+        }
+        //Lưu vào database
+        $customers->save();
+        return redirect()->route('customer.profile')->with('success', 'Cập nhật thông tin thành công!');
+    }
 }
+

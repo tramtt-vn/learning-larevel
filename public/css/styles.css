@@ -1,6 +1,71 @@
  body {
     background: #f4f6f8;
 }
+.w-full {
+    width: 100% !important;
+}
+.mw-400 {
+    max-width: 400px !important;
+}
+.main {
+    max-width: 1080px;
+    margin: auto;
+}
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+.pagination nav > div:first-child  {
+    display: none;
+}
+.pagination .rounded-md {
+    display: flex;
+    gap: 10px;
+}
+.pagination .rounded-md > span{
+    width: 50px;
+}
+.pagination .cursor-default {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    color: #0d6efd;
+    font-weight: bold;
+    font-size: 18px;
+    justify-content: center;
+     align-items: center;
+}
+.btn-warning {
+    color: #fff;
+    border-radius: 4px !important;
+}
+.btn-danger {
+    color: #fff;
+    border-radius: 4px !important;
+}
+.pagination .cursor-default svg {
+    color: #333;
+}
+.pagination a {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+}
+.card-footer {
+    justify-content: center;
+    gap: 20px;
+}
 .login-box {
     max-width: 420px;
     margin: 60px auto;
@@ -222,4 +287,46 @@
     height: 20px;
     color: #adb5bd;
 }
-
+ul, li {
+    list-style: none;
+    padding: 0;
+}
+.add-to-cart-section {
+    display: flex;
+}
+.quantity-input {
+    display: flex;
+    margin-right: 10px;
+}
+.profile ul li{
+    padding: 5px 10px;
+    display: flex;
+    font-size: 16px;
+}
+.profile ul li label{
+    width: 25%;
+    font-weight: bold;
+}
+.profile ul li .form {
+    text-align: center;
+    width: 100%;
+}
+.profile-order {
+    margin-top: 20px;
+}
+.profile-edit ul li{
+    padding: 10px;
+    display: flex;
+    font-size: 16px;
+}
+.profile-edit ul li label{
+    width: 25%;
+    font-weight: bold;
+}
+.profile-edit ul li > div {
+    width: 75%;
+}
+.profile-edit ul li > div span {
+    font-size: 14px;
+    color: #555;
+}

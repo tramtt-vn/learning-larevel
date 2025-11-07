@@ -19,7 +19,7 @@ class ProductController extends Controller
                   ->orWhere('name', 'LIKE', "%{$search}%");
             });
         }
-        $products = $query->get();
+        $products = $query->paginate(12)->withQueryString();
         return view("products.index", compact("products"));
     }
     public function show($id) {

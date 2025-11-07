@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Register')
 @section('content')
@@ -18,12 +18,12 @@
     <form method="POST" action="{{ route('register.submit') }}">
         @csrf
         <div class="mb-3">
-            <label>Name</label>
+            <label>Name <span class="required">*</span></label>
             <input type="text" name="name" value="{{ old('name') }}" class="form-control">
         </div>
 
         <div class="mb-3">
-            <label>Email</label>
+            <label>Email <span class="required">*</span></label>
             <input type="email" name="email" value="{{ old('email') }}" class="form-control">
         </div>
         <div class="mb-3">
@@ -35,12 +35,12 @@
             <input type="text" name="age" value="{{ old('age') }}" class="form-control">
         </div>
         <div class="mb-3">
-            <label>Password</label>
+            <label>Password <span class="required">*</span></label>
             <input type="password" name="password" class="form-control">
         </div>
 
         <div class="mb-3">
-            <label>Confirm Password</label>
+            <label>Confirm Password <span class="required">*</span></label>
             <input type="password" name="password_confirmation" class="form-control">
         </div>
 
@@ -57,7 +57,7 @@
             <button type="submit" class="btn btn-primary w-100">Register</button>
         </div>
         <p class="text-center mt-3 mb-0">
-            Already have an account? <a href="{{ route('customer.login') }}">Login</a>
+            Already have an account? <a href="{{ route('login') }}">Login</a>
         </p>
     </form>
 </div>

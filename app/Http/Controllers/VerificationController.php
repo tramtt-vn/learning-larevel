@@ -10,14 +10,20 @@ class VerificationController extends Controller {
     public function show() {
         return view('auth.verify-email');
     }
-    public function verify(EmailVerificationRequest $request) {
-        if($request->user()->hasVerifiedEmail()){
+    public function verify(Request $request, $id, $hash) {
+        if (! $request->hasValidSignature()) {
+            abort(403);
+        }
+
+        $user = User::findOrFail($id);
+        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+            abort(403);
+        }
+        if($user->hasVerifiedEmail()){
             return redirect()->route('dashboard')->with('info', 'Email đã được xác minh trước đó');
         }
-        if($request->user()->markEmailAsVerified()){
-            $request->user()->update(['verification_token' => null]);
-            event(new Verified($request->user()));
-        }
+        $user->markEmailAsVerified();
+        event(new Verified($user));
         return redirect()->route('dashboard')->with('success', "Email xác thực thành công");
 
     }

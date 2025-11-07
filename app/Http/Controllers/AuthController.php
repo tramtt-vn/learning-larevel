@@ -32,9 +32,14 @@ class AuthController extends Controller
         if(!$user->hasVerifiedEmail()) {
             return back()->withErrors(['email' => 'Email chưa được xác thực, vui lòng xác thực trước khi đăng nhập',])->withInput();
         }
-        if(Auth::attempt($credentials, $request->filled('remember'))){
+        if (Auth::guard('customer')->check()) {
+            Auth::guard('customer')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+        if(Auth::guard('web')->attempt($credentials, $request->filled('remember'))){
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard')->with('success', 'Đăng nhập thành công');
+            return redirect()->intended('/users')->with('success', 'Đăng nhập thành công');
         }
         return back()->withErrors([
             'email' => 'Email hoặc mật khẩu không đúng',
@@ -44,7 +49,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login')->with('status', 'Đăng xuất thành công');
+        return redirect('/admin')->with('status', 'Đăng xuất thành công');
     }
     public function showRegisterForm() {
         return view('auth.register');
@@ -53,6 +58,7 @@ class AuthController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
         $data['verification_token'] = Str::random(64);
+        $data['role'] = "user";
         $user = User::create($data);
         event(new Registered($user));
         return redirect()->route('auth.verify-email', compact('user'))
